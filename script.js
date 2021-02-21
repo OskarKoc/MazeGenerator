@@ -15,15 +15,32 @@ function start() {
   let columns = document.querySelector("#colNum").value;
   let rows = document.querySelector("#rowNum").value;
 
-  if (!isNaN(rows) && !isNaN(columns)) {
-    newMaze = new Maze(columns, rows, height);
-    newMaze.generateArray();
-    newMaze.setAllCellsInGrid();
-    cellPlayer = { cellSize: newMaze.cellSize, x: 0, y: 0 };
-    newMaze.draw();
-    Player.drawPlayer();
-  }
+  if (!isNaN(rows) && !isNaN(columns) && columns !== "" && rows !== "") {
 
+    if (rows <= 1000 && columns <= 1000) {
+      newMaze = new Maze(columns, rows, height);
+      newMaze.generateArray();
+      newMaze.setAllCellsInGrid();
+      cellPlayer = { cellSize: newMaze.cellSize, x: 0, y: 0 };
+      newMaze.draw();
+      Player.drawPlayer();
+    } else {
+      Swal.fire({
+        title: "Error",
+        text: "Please keep the dimensions up to 1000 x 1000",
+        background: "#f2f2f2",
+        showConfirmButton: true,
+        confirmButtonColor: "#49bf88",
+      });
+    }
+  } else
+    Swal.fire({
+      title: "Error",
+      text: "Please enter the number of rows and columns",
+      background: "#f2f2f2",
+      showConfirmButton: true,
+      confirmButtonColor: "#49bf88",
+    });
 }
 class Maze {
   constructor(rownum, colnum, size) {
@@ -110,6 +127,7 @@ class Maze {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     currentCellX = 0;
     currentCellY = 0;
+
     //draw finish
     let x = (this.colNum - 1) * this.cellSize;
     let y = (this.rowNum - 1) * this.cellSize;
@@ -199,7 +217,6 @@ class Cell {
 }
 class Player {
   static movePlayer(xMOD, yMOD) {
-    console.log(cellPlayer);
     if (!newMaze.grid[cellPlayer.y][cellPlayer.x].topWall && yMOD < 0) {
       this.removePlayer();
       cellPlayer.y = cellPlayer.y + yMOD;
@@ -228,9 +245,18 @@ class Player {
       cellPlayer.x == newMaze.rowNum - 1 &&
       cellPlayer.y == newMaze.colNum - 1
     ) {
-      if (confirm("You Win!\nGenerate a new maze?")) {
-        start();
-      }
+      Swal.fire({
+        title: "You win!",
+        text: "Generate new maze?",
+        background: "#f2f2f2",
+        showConfirmButton: true,
+        confirmButtonColor: "#49bf88",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          start();
+        }
+      })
+
     }
   }
   static drawPlayer() {
@@ -260,6 +286,9 @@ document.addEventListener(
     }
 
     switch (event.key) {
+      case "Enter":
+        start();
+        break;
       case "ArrowDown":
         Player.movePlayer(0, +1);
         break;

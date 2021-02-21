@@ -1,20 +1,26 @@
 <!DOCTYPE html>
 
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Maze Generator</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <canvas id="maze"></canvas>
-    <nav>
-      <input type="text" id="colNum" placeholder="Columns"/>x
-      <input type="text" id="rowNum"  placeholder="Rows"/>
-      <input type="button" value="GENERATE MAZE" onclick="start()"/>
-    </nav>
-    <script src="script.js"></script>
-    <script src="sweetalert2/dist/sweetalert2.all.min.js"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maze Generator</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="node_modules\sweetalert2\dist\sweetalert2.min.css">
+</head>
+
+<body>
+  <canvas id="maze"></canvas>
+  <nav>
+    <input type="text" id="colNum" placeholder="Columns" />x
+    <input type="text" id="rowNum" placeholder="Rows" />
+    <input type="button" value="GENERATE MAZE" onclick="start()" />
+  </nav>
+
+  <div id="tag">Made by OskarKoc</div>
+  <script src="script.js"></script>
+  <script src="node_modules\sweetalert2\dist\sweetalert2.all.min.js"></script>
+</body>
+
 </html>
