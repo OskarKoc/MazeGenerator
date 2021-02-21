@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@100;500&display=swap");
+
+
 * {
   padding: 0;
   margin: 0;
@@ -12,7 +14,8 @@ body {
   align-items: center;
   font-family: "Roboto", sans-serif;
   font-size: 16px;
-  background-color: #222426;
+  background-color: #1b1b1b;
+  background-image: url("imgs/bg.png");
 }
 canvas {
   margin: 100px;
@@ -20,9 +23,9 @@ canvas {
 input {
   display: inline-block;
 }
-footer {
+nav {
   color: #f2f2f2;
-  background-color: #373b409b;
+  background-color: #292929;
   position: fixed;
   top: 0;
   right: 0;
@@ -33,7 +36,7 @@ footer {
   align-items: center;
   padding: 0.5rem;
 }
-footer > input[type="button"] {
+nav > input[type="button"] {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
   background-color: #49bf88b7;
@@ -42,11 +45,11 @@ footer > input[type="button"] {
   padding: 0.5rem;
   margin-left: 1rem;
 }
-footer > input[type="button"]:active{
+nav > input[type="button"]:active{
     background-color: #f2f2f2;
     color: #49bf88b7;
 }
-footer > input[type="text"] {
+nav > input[type="text"] {
   width: 100px;
   font-family: "Roboto", sans-serif;
   font-size: 16px;

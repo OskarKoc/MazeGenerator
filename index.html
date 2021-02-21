@@ -1,21 +1,20 @@
 <!DOCTYPE html>
+
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Naloga 2</title>
+    <title>Maze Generator</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    
     <canvas id="maze"></canvas>
-    <footer>
-      Min. Side (px):<input type="text" id="width"/>
-      <input type="text" id="colNum"/>x
-      <input type="text" id="rowNum"/>
+    <nav>
+      <input type="text" id="colNum" placeholder="Columns"/>x
+      <input type="text" id="rowNum"  placeholder="Rows"/>
       <input type="button" value="GENERATE MAZE" onclick="start()"/>
-    </footer>
-
+    </nav>
     <script src="script.js"></script>
+    <script src="sweetalert2/dist/sweetalert2.all.min.js"></script>
   </body>
 </html>

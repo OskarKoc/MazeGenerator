@@ -1,14 +1,33 @@
+
 var canvas = document.getElementById("maze");
 var ctx = canvas.getContext("2d");
 var currentCell;
 var nextCell;
-var stack = [];
+
 var currentCellX = 0;
 var currentCellY = 0;
 var newMaze;
 var cellPlayer;
+
+
+function start() {
+  let height = document.querySelector("body").clientHeight * 0.8;
+  let columns = document.querySelector("#colNum").value;
+  let rows = document.querySelector("#rowNum").value;
+
+  if (!isNaN(rows) && !isNaN(columns)) {
+    newMaze = new Maze(columns, rows, height);
+    newMaze.generateArray();
+    newMaze.setAllCellsInGrid();
+    cellPlayer = { cellSize: newMaze.cellSize, x: 0, y: 0 };
+    newMaze.draw();
+    Player.drawPlayer();
+  }
+
+}
 class Maze {
   constructor(rownum, colnum, size) {
+    this.stack = [];
     this.rowNum = rownum;
     this.colNum = colnum;
     this.size = size;
@@ -30,8 +49,8 @@ class Maze {
   }
   setAllCellsInGrid() {
     currentCell = this.grid[0][0];
-    stack.push(currentCell);
-    while (stack.length != 0) {
+    this.stack.push(currentCell);
+    while (this.stack.length != 0) {
       newMaze.setCellState();
     }
   }
@@ -75,11 +94,11 @@ class Maze {
         currentCell.rightWall = false;
       }
       currentCell.visited = true;
-      stack.push(currentCell);
+      this.stack.push(currentCell);
       currentCell = nextCell;
       currentCell.visited = true;
     } else {
-      currentCell = stack.pop();
+      currentCell = this.stack.pop();
     }
   }
 
@@ -97,8 +116,6 @@ class Maze {
     ctx.fillStyle = "#49BF88";
     ctx.fillRect(x, y, this.cellSize, this.cellSize);
 
-    //draw player
-    // player.dra  Player();
     //draw all cells
     for (let i = 0; i < this.rowNum; i++) {
       for (let j = 0; j < this.colNum; j++) {
@@ -180,7 +197,7 @@ class Cell {
     }
   }
 }
-class player {
+class Player {
   static movePlayer(xMOD, yMOD) {
     console.log(cellPlayer);
     if (!newMaze.grid[cellPlayer.y][cellPlayer.x].topWall && yMOD < 0) {
@@ -234,57 +251,33 @@ class player {
     );
   }
 }
-function start() {
-  let width =
-    document.querySelector("#width").value !== ""
-      ? document.querySelector("#width").value
-      : 1000;
-  let columns =
-    document.querySelector("#colNum").value !== ""
-      ? document.querySelector("#colNum").value
-      : 10;
-  let rows =
-    document.querySelector("#rowNum").value !== ""
-      ? document.querySelector("#rowNum").value
-      : 10;
-  console.log("ass je" + document.querySelector("#width").value);
-  newMaze = new Maze(columns, rows, width);
 
-  newMaze.generateArray();
-  newMaze.setAllCellsInGrid();
-  cellPlayer = { cellSize: newMaze.cellSize, x: 0, y: 0 };
+document.addEventListener(
+  "keydown",
+  function (event) {
+    if (event.defaultPrevented) {
+      return;
+    }
 
-  newMaze.draw();
+    switch (event.key) {
+      case "ArrowDown":
+        Player.movePlayer(0, +1);
+        break;
+      case "ArrowUp":
+        Player.movePlayer(0, -1);
+        break;
+      case "ArrowLeft":
+        Player.movePlayer(-1, 0);
 
-  console.log(newMaze);
+        break;
+      case "ArrowRight":
+        Player.movePlayer(+1, 0);
 
-  document.addEventListener(
-    "keydown",
-    function (event) {
-      if (event.defaultPrevented) {
+        break;
+      default:
         return;
-      }
-
-      switch (event.key) {
-        case "ArrowDown":
-          player.movePlayer(0, +1);
-          break;
-        case "ArrowUp":
-          player.movePlayer(0, -1);
-          break;
-        case "ArrowLeft":
-          player.movePlayer(-1, 0);
-
-          break;
-        case "ArrowRight":
-          player.movePlayer(+1, 0);
-
-          break;
-        default:
-          return;
-      }
-      event.preventDefault();
-    },
-    true
-  );
-}
+    }
+    event.preventDefault();
+  },
+  true
+);
