@@ -1,4 +1,3 @@
-
 var canvas = document.getElementById("maze");
 var ctx = canvas.getContext("2d");
 var currentCell;
@@ -9,16 +8,16 @@ var currentCellY = 0;
 var newMaze;
 var cellPlayer;
 
-
+var isStopped = false;
 function start() {
   let height = document.querySelector("body").clientHeight * 0.8;
+  isStopped = false;
   let columns = document.querySelector("#colNum").value;
   let rows = document.querySelector("#rowNum").value;
 
   if (!isNaN(rows) && !isNaN(columns) && columns !== "" && rows !== "") {
-
-    if (rows <= 1000 && columns <= 1000) {
-      newMaze = new Maze(columns, rows, height);
+    if (rows <= 1000 && columns <= 1000 && rows > 1 && columns > 1) {
+      newMaze = new Maze(parseInt(rows), parseInt(columns), height);
       newMaze.generateArray();
       newMaze.setAllCellsInGrid();
       cellPlayer = { cellSize: newMaze.cellSize, x: 0, y: 0 };
@@ -27,7 +26,7 @@ function start() {
     } else {
       Swal.fire({
         title: "Error",
-        text: "Please keep the dimensions up to 1000 x 1000",
+        text: "Please keep the dimensions between 2x2 and 1000 x 1000",
         background: "#f2f2f2",
         showConfirmButton: true,
         confirmButtonColor: "#49bf88",
@@ -43,17 +42,24 @@ function start() {
     });
 }
 class Maze {
-  constructor(rownum, colnum, size) {
+  constructor(rownum, colnum, height) {
     this.stack = [];
     this.rowNum = rownum;
     this.colNum = colnum;
-    this.size = size;
+    this.height = height;
     this.grid = [];
-    this.cellSize = this.size / this.rowNum;
-  }
-  static cellSize = this.cellSize;
-  static returnGrid() {
-    return this.grid;
+    if (this.colNum >= this.rowNum) {
+      canvas.width = this.height;
+      this.cellSize = this.height / this.colNum;
+      let heightMult = this.rowNum / this.colNum;
+      canvas.height = this.height * heightMult;
+    }
+    if (this.colNum <= this.rowNum) {
+      canvas.height = this.height;
+      this.cellSize = this.height / this.rowNum;
+      let heightMult = this.colNum / this.rowNum;
+      canvas.width = this.height * heightMult;
+    }
   }
   generateArray() {
     for (let i = 0; i < this.rowNum; i++) {
@@ -120,10 +126,6 @@ class Maze {
   }
 
   draw() {
-    //set width according to column/row ratio
-    let widthMult = this.colNum / this.rowNum;
-    canvas.width = this.size * widthMult;
-    canvas.height = this.size;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     currentCellX = 0;
     currentCellY = 0;
@@ -217,46 +219,49 @@ class Cell {
 }
 class Player {
   static movePlayer(xMOD, yMOD) {
-    if (!newMaze.grid[cellPlayer.y][cellPlayer.x].topWall && yMOD < 0) {
-      this.removePlayer();
-      cellPlayer.y = cellPlayer.y + yMOD;
-      cellPlayer.x = cellPlayer.x + xMOD;
-      this.drawPlayer();
-    }
-    if (!newMaze.grid[cellPlayer.y][cellPlayer.x].bottomWall && yMOD > 0) {
-      this.removePlayer();
-      cellPlayer.y = cellPlayer.y + yMOD;
-      cellPlayer.x = cellPlayer.x + xMOD;
-      this.drawPlayer();
-    }
-    if (!newMaze.grid[cellPlayer.y][cellPlayer.x].leftWall && xMOD < 0) {
-      this.removePlayer();
-      cellPlayer.y = cellPlayer.y + yMOD;
-      cellPlayer.x = cellPlayer.x + xMOD;
-      this.drawPlayer();
-    }
-    if (!newMaze.grid[cellPlayer.y][cellPlayer.x].rightWall && xMOD > 0) {
-      this.removePlayer();
-      cellPlayer.y = cellPlayer.y + yMOD;
-      cellPlayer.x = cellPlayer.x + xMOD;
-      this.drawPlayer();
-    }
-    if (
-      cellPlayer.x == newMaze.rowNum - 1 &&
-      cellPlayer.y == newMaze.colNum - 1
-    ) {
-      Swal.fire({
-        title: "You win!",
-        text: "Generate new maze?",
-        background: "#f2f2f2",
-        showConfirmButton: true,
-        confirmButtonColor: "#49bf88",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          start();
-        }
-      })
-
+    if (!isStopped) {
+      if (!newMaze.grid[cellPlayer.y][cellPlayer.x].topWall && yMOD < 0) {
+        this.removePlayer();
+        cellPlayer.y = cellPlayer.y + yMOD;
+        cellPlayer.x = cellPlayer.x + xMOD;
+        this.drawPlayer();
+      }
+      if (!newMaze.grid[cellPlayer.y][cellPlayer.x].bottomWall && yMOD > 0) {
+        this.removePlayer();
+        cellPlayer.y = cellPlayer.y + yMOD;
+        cellPlayer.x = cellPlayer.x + xMOD;
+        this.drawPlayer();
+      }
+      if (!newMaze.grid[cellPlayer.y][cellPlayer.x].leftWall && xMOD < 0) {
+        this.removePlayer();
+        cellPlayer.y = cellPlayer.y + yMOD;
+        cellPlayer.x = cellPlayer.x + xMOD;
+        this.drawPlayer();
+      }
+      if (!newMaze.grid[cellPlayer.y][cellPlayer.x].rightWall && xMOD > 0) {
+        this.removePlayer();
+        cellPlayer.y = cellPlayer.y + yMOD;
+        cellPlayer.x = cellPlayer.x + xMOD;
+        this.drawPlayer();
+      }
+      if (
+        (cellPlayer.x == newMaze.colNum - 1 &&
+          cellPlayer.y == newMaze.rowNum - 1) ||
+        (cellPlayer.x == -1 && cellPlayer.y == -1)
+      ) {
+        isStopped = true;
+        Swal.fire({
+          title: "You win!",
+          text: "Generate new maze?",
+          background: "#f2f2f2",
+          showConfirmButton: true,
+          confirmButtonColor: "#49bf88",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.setTimeout(start, 200);
+          }
+        });
+      }
     }
   }
   static drawPlayer() {
@@ -287,7 +292,7 @@ document.addEventListener(
 
     switch (event.key) {
       case "Enter":
-        start();
+        
         break;
       case "ArrowDown":
         Player.movePlayer(0, +1);
