@@ -7,9 +7,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Maze Generator</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="shortcut icon" href="favicon.ico" />
 </head>
 
 <body>
+  <!-- Transparent overlay -->
+  <div class="overlay"></div>
+  <!-- Start Screen -->
+  <div class="popup">
+    <div class="popup-header">
+      <h1>Maze Generator</h1>
+      <input type="button" value="&times;" onclick="closePopup()" />
+    </div>
+    <main>
+      <p>
+        Welcome to a maze generator based on the
+        <a style="text-decoration: none; color: #f2f2f2; font-weight: 900"
+          href="https://en.wikipedia.org/wiki/Backtracking">recursive backtracking algorithm.</a>
+      </p>
+      <br />
+      <p>
+        To generate a maze, exit this window and enter the number columns and
+        rows in the required fields.
+      </p>
+      <p>You can try to solve the maze by using the arrow keys.</p>
+    </main>
+  </div>
   <canvas id="maze"></canvas>
   <nav>
     <input type="text" id="colNum" placeholder="Columns" />x

@@ -315,3 +315,11 @@ document.addEventListener(
   },
   true
 );
+
+
+function closePopup() {
+	let popup = document.querySelector(".popup");
+	let overlay = document.querySelector(".overlay");
+	popup.style.transform = "translate(-50%, -50%) scale(0)";
+	overlay.style.display = "none";
+}
