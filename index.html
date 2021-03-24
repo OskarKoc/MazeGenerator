@@ -22,7 +22,7 @@
     <main>
       <p>
         Welcome to a maze generator based on the
-        <a style="text-decoration: none; color: #f2f2f2; font-weight: 900"
+        <a style="text-decoration: none; color: #49bf88; font-weight: 900"
           href="https://en.wikipedia.org/wiki/Backtracking">recursive backtracking algorithm.</a>
       </p>
       <br />
@@ -33,12 +33,17 @@
       <p>You can try to solve the maze by using the arrow keys.</p>
     </main>
   </div>
-  <canvas id="maze"></canvas>
+  <!-- Navbar -->
   <nav>
-    <input type="text" id="colNum" placeholder="Columns" />x
+    <input type="text" id="colNum" placeholder="Columns" />&times;
     <input type="text" id="rowNum" placeholder="Rows" />
     <input type="button" value="GENERATE MAZE" onclick="start()" />
+    <div id="time">&nbsp;</div>
   </nav>
+
+  
+  <canvas id="maze"></canvas>
+
 
   <div id="tag">Made by Oskar K, 4.RA</div>
   <script src="script.js"></script>
