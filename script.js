@@ -16,7 +16,7 @@ function start() {
   let rows = document.querySelector("#rowNum").value;
 
   if (!isNaN(rows) && !isNaN(columns) && columns !== "" && rows !== "") {
-    if (rows <= 1000 && columns <= 1000 && rows > 1 && columns > 1) {
+    if (rows <= 300 && columns <= 300 && rows > 1 && columns > 1) {
       newMaze = new Maze(parseInt(rows), parseInt(columns), height);
       newMaze.generateArray();
       newMaze.setAllCellsInGrid();
@@ -26,7 +26,7 @@ function start() {
     } else {
       Swal.fire({
         title: "Error",
-        text: "Please keep the dimensions between 2x2 and 1000 x 1000",
+        text: "Please keep the dimensions between 2x2 and 300 x 300",
         background: "#f2f2f2",
         showConfirmButton: true,
         confirmButtonColor: "#49bf88",
