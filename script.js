@@ -7,16 +7,34 @@ var currentCellX = 0;
 var currentCellY = 0;
 var newMaze;
 var cellPlayer;
+var startedTime;
 
+var timerInterval;
 var isStopped = false;
+
+function updateTimer() {
+  if (!isStopped) {
+    document.querySelector("#time").innerHTML =
+    "TIME: " +
+    Number(Math.round((Date.now() - startedTime) / 1000 + "e2") + "e-2");
+  requestAnimationFrame(updateTimer);
+  }
+  cancelAnimationFrame(timerInterval);
+}
 function start() {
-  let height = document.querySelector("body").clientHeight * 0.8;
+  
+  startedTime = startMS = Date.now();
+  let height = document.querySelector("body").clientHeight * 0.7;
   isStopped = false;
+
   let columns = document.querySelector("#colNum").value;
   let rows = document.querySelector("#rowNum").value;
 
   if (!isNaN(rows) && !isNaN(columns) && columns !== "" && rows !== "") {
-    if (rows <= 300 && columns <= 300 && rows > 1 && columns > 1) {
+    if (rows <= 200 && columns <= 200 && rows > 1 && columns > 1) {
+
+      timerInterval = requestAnimationFrame(updateTimer);
+      
       newMaze = new Maze(parseInt(rows), parseInt(columns), height);
       newMaze.generateArray();
       newMaze.setAllCellsInGrid();
@@ -26,7 +44,7 @@ function start() {
     } else {
       Swal.fire({
         title: "Error",
-        text: "Please keep the dimensions between 2x2 and 300 x 300",
+        text: "Please keep the dimensions between 2x2 and 200 x 200",
         background: "#f2f2f2",
         showConfirmButton: true,
         confirmButtonColor: "#49bf88",
@@ -250,9 +268,11 @@ class Player {
         (cellPlayer.x == -1 && cellPlayer.y == -1)
       ) {
         isStopped = true;
+        
+
         Swal.fire({
           title: "You win!",
-          text: "Generate new maze?",
+          html: document.querySelector("#time").innerHTML+"<br>"+"Generate new maze?",
           background: "#f2f2f2",
           showConfirmButton: true,
           confirmButtonColor: "#49bf88",
@@ -292,7 +312,6 @@ document.addEventListener(
 
     switch (event.key) {
       case "Enter":
-        
         break;
       case "ArrowDown":
         Player.movePlayer(0, +1);
@@ -316,10 +335,9 @@ document.addEventListener(
   true
 );
 
-
 function closePopup() {
-	let popup = document.querySelector(".popup");
-	let overlay = document.querySelector(".overlay");
-	popup.style.transform = "translate(-50%, -50%) scale(0)";
-	overlay.style.display = "none";
+  let popup = document.querySelector(".popup");
+  let overlay = document.querySelector(".overlay");
+  popup.style.transform = "translate(-50%, -50%) scale(0)";
+  overlay.style.display = "none";
 }

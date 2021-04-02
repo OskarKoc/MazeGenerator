@@ -55,6 +55,7 @@ nav > input[type="button"]:active {
   color: #49bf88;
 }
 nav > input[type="text"] {
+  background-color: #f2f2f2;
   outline: none;
   width: 100px;
   font-family: "Roboto", sans-serif;
@@ -66,10 +67,17 @@ nav > input[type="text"] {
   margin-right: 1rem;
 }
 
+#time{
+  position: fixed;
+  color: #f2f2f2;
+  top: 4rem;
+  width: 100px;
+}
 #tag {
   position: fixed;
   color: #f2f2f2;
   bottom: 0;
+  
 }
 
 .overlay {
